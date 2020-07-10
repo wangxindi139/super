@@ -12,8 +12,8 @@ public class ShopUtil {
         }
     }
 
-    //链接数据库
 
+//链接数据库
     public static Connection getConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url+"?user="+user+"&password="+password);
     }

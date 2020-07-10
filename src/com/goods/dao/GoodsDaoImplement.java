@@ -21,12 +21,12 @@ public class GoodsDaoImplement implements GoodsDao {
         Connection collection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String sql = "select *from goods left join offerprice on goods.Pro_ld = OfferPrice.Pro_Id;";
+        String sql = "select *from goods;";
         try {
             collection = ShopUtil.getConnection(URL,USER,PASSWORD);
             preparedStatement = collection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
-            System.out.println("ID\t商品编码\t商品名%n");
+            System.out.println("ID\t\t\t商品编码\t\t\t商品名");
             while (resultSet.next()){
                 Goods goods = new Goods(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3));
                 System.out.println(goods);
@@ -52,7 +52,7 @@ public class GoodsDaoImplement implements GoodsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "insert into 'shangpin'.goods(Pro_ld, S_ku, Title) value (?,?,?);";
+        String sql = "insert into goods(Pro_ld, S_ku, Title) value (?,?,?);";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,goods.getId());
@@ -82,12 +82,10 @@ public class GoodsDaoImplement implements GoodsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "delete from shangpin.goods where Pro_ld = ?;";
+        String sql = "delete from goods where Pro_ld = ?;";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            System.out.println("输入要删除商品的ID");
-            int a = scanner.nextInt();
-            preparedStatement.setInt(1,a);
+            preparedStatement.setInt(1,id);
             int rs = preparedStatement.executeUpdate();
             if (rs == 1){
                 result = true;
@@ -111,7 +109,7 @@ public class GoodsDaoImplement implements GoodsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "update shangpin.goods set Pro_ld = ?,S_ku = ?,Title = ? where Pro_ld = ?;";
+        String sql = "update goods set Pro_ld = ?,S_ku = ?,Title = ? where Pro_ld = id;";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,goods.getId());
@@ -135,18 +133,19 @@ public class GoodsDaoImplement implements GoodsDao {
     public boolean selectGoodsId(int id) {
         boolean result = false;
         Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
         try {
             connection = ShopUtil.getConnection(URL,USER,PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String sql = "select * from goods where Pro_Id = ?";
+
+        String sql = "select * from mysqldb.goods where Pro_ld = ?";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1,id);
             resultSet = preparedStatement.executeQuery();
+            preparedStatement.setInt(1,id);
             while (resultSet.next()){
                 Goods goods = new Goods(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3));
                 if (resultSet.getString(1) != null){

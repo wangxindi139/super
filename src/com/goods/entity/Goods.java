@@ -38,6 +38,7 @@ public class Goods {
         this.name = name;
     }
 
+
     @Override
     public String toString() {
         return "Goods{" +
