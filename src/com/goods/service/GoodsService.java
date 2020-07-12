@@ -55,7 +55,7 @@ public class GoodsService {
             System.out.println("请输入修改的id;");
             int id = scanner.nextInt();
             if (goodsDao.selectGoodsId(id)){
-                System.out.println("请依次输入要修改的id，编码，品名(用空格符分开)");
+                System.out.println("请依次输入要修改的编码，品名(用空格符分开)");
                 int bm = scanner.nextInt();
                 String name = scanner.nextLine();
                 Goods goods = new Goods(id,bm,name);

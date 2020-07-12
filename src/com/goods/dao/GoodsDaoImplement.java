@@ -103,19 +103,21 @@ public class GoodsDaoImplement implements GoodsDao {
     public boolean modifyGoods(Goods goods) {
         boolean result = false;
         Connection connection = null;
+        ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = ShopUtil.getConnection(URL,USER,PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String sql = "update goods set Pro_ld = ?,S_ku = ?,Title = ? where Pro_ld = id;";
+        String sql = "update goods set Pro_ld = ?,S_ku = ?,Title = ? where Pro_ld = ?;";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,goods.getId());
             preparedStatement.setInt(2,goods.getBm());
             preparedStatement.setString(3,goods.getName());
             int rs = preparedStatement.executeUpdate();
+
             if (rs == 1){
                 result = true;
             }
@@ -141,14 +143,16 @@ public class GoodsDaoImplement implements GoodsDao {
             e.printStackTrace();
         }
 
-        String sql = "select * from mysqldb.goods where Pro_ld = ?";
+        String sql = "select * from goods where Pro_ld = ?;";
         try {
             preparedStatement = connection.prepareStatement(sql);
-            resultSet = preparedStatement.executeQuery();
+
             preparedStatement.setInt(1,id);
+            resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()){
                 Goods goods = new Goods(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3));
-                if (resultSet.getString(1) != null){
+                if (resultSet.getString(1) != null) {
                     System.out.println("id\t编号\t品名");
                     System.out.println(goods);
                     result = true;
